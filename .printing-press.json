@@ -1,0 +1,51 @@
+{
+  "schema_version": 2,
+  "generated_at": "2026-11-07T07:53:28.533460509Z",
+  "printing_press_version": "4.35.3",
+  "api_name": "camelcamelcamel",
+  "display_name": "camelcamelcamel",
+  "cli_name": "camel-cli",
+  "creator": {
+    "handle": "jez500",
+    "name": "Jeremy Graham"
+  },
+  "owner": "jez500",
+  "printer": "jez500",
+  "printer_name": "Jeremy Graham",
+  "spec_path": "spec.yaml",
+  "spec_format": "internal",
+  "spec_source": "sniffed",
+  "spec_checksum": "sha256:738d2373a9b28799c42b52638d45e76db784d423402e575219a6bd391515a5a4",
+  "run_id": "20261107-114413-626a6f8a",
+  "category": "commerce",
+  "description": "Paste an Amazon URL (US, AU, UK, CA, DE, FR, IT or ES) and get its price history: exact lowest, highest, current and average for every price type, plus an approximate dated series read from the chart.",
+  "homepage": "https://camelcamelcamel.com",
+  "mcp_binary": "camel-mcp",
+  "mcp_tool_count": 6,
+  "mcp_public_tool_count": 6,
+  "mcp_ready": "full",
+  "api_version": "0.1.0",
+  "auth_type": "none",
+  "novel_features": [
+    {
+      "name": "Cross-marketplace compare",
+      "command": "compare",
+      "description": "See one product's current, lowest and average prices on the US, AU and other Amazon sites side by side."
+    },
+    {
+      "name": "Personal price trend",
+      "command": "trend",
+      "description": "See how a product's price moved across your own past lookups (history, deal, compare, watch add and watch check save snapshots), including new all-time lows."
+    },
+    {
+      "name": "Watchlist near-lows ranking",
+      "command": "lows",
+      "description": "Rank every watched product by how close its current price is to its lowest-ever price (needs watch add and watch check first)."
+    },
+    {
+      "name": "Unseen drops",
+      "command": "fresh-drops",
+      "description": "Show only the top price drops you have not already seen in earlier pulls."
+    }
+  ]
+}

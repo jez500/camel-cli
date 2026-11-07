@@ -1,0 +1,6 @@
+{
+  "descriptions": {
+    "popular_list": "List the products currently on camelcamelcamel's US popular page, scraped from the HTML. Optional: deals-only (1 = only products at a deal price). Returns product links (ASIN slug, product URL, image, and name), with prices omitted; use popular_feed for current, list and average prices, or product_get on an ASIN for its full price summary.",
+    "drops_list": "List the products with the biggest recent Amazon price drops from camelcamelcamel's US top-drops page, scraped from the HTML. Optional: period (recent, daily, weekly, relativedaily, relativeweekly), category (Amazon category slug), min-drop (currency amount for recent/daily/weekly, percent for relative periods). Returns product links (ASIN slug, product URL, image, and name), with drop amounts omitted; use drops_feed when you need the drop percent and old/new price."
+  }
+}

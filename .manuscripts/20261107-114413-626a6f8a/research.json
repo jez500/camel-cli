@@ -1,0 +1,178 @@
+{
+  "api_name": "camelcamelcamel",
+  "novelty_score": 0,
+  "alternatives": [
+    {
+      "name": "amazon-mcp",
+      "url": "https://github.com/JanNafta/amazon-mcp",
+      "language": "Python",
+      "install_method": "",
+      "stars": 0,
+      "last_updated": "",
+      "command_count": 0,
+      "has_json_output": false,
+      "has_auth_support": false
+    }
+  ],
+  "gaps": [],
+  "patterns": [],
+  "recommendation": "proceed",
+  "researched_at": "2026-11-07T00:58:20Z",
+  "novel_features": [
+    {
+      "name": "Cross-marketplace compare",
+      "command": "compare",
+      "description": "See one product's current, lowest and average prices on the US, AU and other Amazon sites side by side.",
+      "rationale": "camelcamelcamel and every existing tool show one marketplace per lookup; this aligns several in one table.",
+      "example": "camelcamelcamel-pp-cli compare https://www.amazon.com.au/dp/B0BSHF7WHW --locales us,au --agent",
+      "why_it_matters": "Pick this when the question is where a product is cheapest relative to its own history.",
+      "group": "Better buying decisions"
+    },
+    {
+      "name": "Personal price trend",
+      "command": "trend",
+      "description": "See how a product's price moved across your own past lookups (history, deal, compare, watch add and watch check save snapshots), including new all-time lows.",
+      "rationale": "camelcamelcamel exposes only lifetime summaries and a chart image; the local snapshot store builds a real timeline over time.",
+      "example": "camelcamelcamel-pp-cli trend B07T32R43P --type amazon --agent",
+      "why_it_matters": "Pick this to answer 'has the price changed since I last checked?' without a network call.",
+      "group": "Offline analysis of saved snapshots"
+    },
+    {
+      "name": "Watchlist near-lows ranking",
+      "command": "lows",
+      "description": "Rank every watched product by how close its current price is to its lowest-ever price (needs watch add and watch check first).",
+      "rationale": "Requires joining the local watchlist with the latest stored snapshot of every product.",
+      "example": "camelcamelcamel-pp-cli lows --within 10 --agent",
+      "why_it_matters": "Pick this to answer 'which of my watched items should I buy now?'",
+      "group": "Offline analysis of saved snapshots"
+    },
+    {
+      "name": "Unseen drops",
+      "command": "fresh-drops",
+      "description": "Show only the top price drops you have not already seen in earlier pulls.",
+      "rationale": "The drops feed has no read state; a local table of past pulls makes the daily scan incremental.",
+      "example": "camelcamelcamel-pp-cli fresh-drops --period daily --min-pct 30 --agent",
+      "why_it_matters": "Pick this for a daily deal scan that skips items already reviewed.",
+      "group": "Offline analysis of saved snapshots"
+    }
+  ],
+  "novel_features_built": [
+    {
+      "name": "Cross-marketplace compare",
+      "command": "compare",
+      "description": "See one product's current, lowest and average prices on the US, AU and other Amazon sites side by side.",
+      "rationale": "camelcamelcamel and every existing tool show one marketplace per lookup; this aligns several in one table.",
+      "example": "camelcamelcamel-pp-cli compare https://www.amazon.com.au/dp/B0BSHF7WHW --locales us,au --agent",
+      "why_it_matters": "Pick this when the question is where a product is cheapest relative to its own history.",
+      "group": "Better buying decisions"
+    },
+    {
+      "name": "Personal price trend",
+      "command": "trend",
+      "description": "See how a product's price moved across your own past lookups (history, deal, compare, watch add and watch check save snapshots), including new all-time lows.",
+      "rationale": "camelcamelcamel exposes only lifetime summaries and a chart image; the local snapshot store builds a real timeline over time.",
+      "example": "camelcamelcamel-pp-cli trend B07T32R43P --type amazon --agent",
+      "why_it_matters": "Pick this to answer 'has the price changed since I last checked?' without a network call.",
+      "group": "Offline analysis of saved snapshots"
+    },
+    {
+      "name": "Watchlist near-lows ranking",
+      "command": "lows",
+      "description": "Rank every watched product by how close its current price is to its lowest-ever price (needs watch add and watch check first).",
+      "rationale": "Requires joining the local watchlist with the latest stored snapshot of every product.",
+      "example": "camelcamelcamel-pp-cli lows --within 10 --agent",
+      "why_it_matters": "Pick this to answer 'which of my watched items should I buy now?'",
+      "group": "Offline analysis of saved snapshots"
+    },
+    {
+      "name": "Unseen drops",
+      "command": "fresh-drops",
+      "description": "Show only the top price drops you have not already seen in earlier pulls.",
+      "rationale": "The drops feed has no read state; a local table of past pulls makes the daily scan incremental.",
+      "example": "camelcamelcamel-pp-cli fresh-drops --period daily --min-pct 30 --agent",
+      "why_it_matters": "Pick this for a daily deal scan that skips items already reviewed.",
+      "group": "Offline analysis of saved snapshots"
+    }
+  ],
+  "narrative": {
+    "display_name": "camelcamelcamel",
+    "headline": "Paste an Amazon URL (US, AU, UK, CA, DE, FR, IT or ES) and get its price history: exact lowest, highest, current and average for every price type, plus an approximate dated series read from the chart.",
+    "value_prop": "It reads camelcamelcamel's public price pages for eight Amazon marketplaces. history gives the exact lifetime summary and a dated price series reconstructed from the chart image (approximate, about a day per pixel). deal gives a buy/wait verdict, compare puts marketplaces side by side, and every lookup saves a snapshot that trend and lows analyze offline.",
+    "auth_narrative": "No account or API key is needed. camel-cli sends an honest camel-cli User-Agent and about one request per second (history fetches the page plus one chart image; compare fetches one page per marketplace). Site search is not available because Cloudflare challenges every non-browser client on that page.",
+    "quickstart": [
+      {
+        "command": "camelcamelcamel-pp-cli doctor --dry-run",
+        "comment": "Check the install without any network call"
+      },
+      {
+        "command": "camelcamelcamel-pp-cli history https://www.amazon.com/dp/B07T32R43P",
+        "comment": "The headline: price history for an Amazon URL"
+      },
+      {
+        "command": "camelcamelcamel-pp-cli deal B07T32R43P",
+        "comment": "Buy-or-wait verdict from current vs lowest and average"
+      },
+      {
+        "command": "camelcamelcamel-pp-cli chart B07T32R43P --range 1y --output chart.png",
+        "comment": "Save the price-history chart image"
+      },
+      {
+        "command": "camelcamelcamel-pp-cli compare B0BSHF7WHW --locales us,au",
+        "comment": "Same product on two marketplaces"
+      }
+    ],
+    "troubleshoots": [
+      {
+        "symptom": "not tracked by camelcamelcamel",
+        "fix": "camelcamelcamel has no history for that ASIN on that marketplace; try another --locale or add it on the website"
+      },
+      {
+        "symptom": "HTTP 403 with a Cloudflare challenge",
+        "fix": "Wait a few minutes and retry; do not change the User-Agent to a browser string, because that triggers the challenge"
+      },
+      {
+        "symptom": "wrong marketplace",
+        "fix": "Pass --locale au (or us, uk, ca, de, fr, it, es) when giving a bare ASIN"
+      }
+    ],
+    "when_to_use": "Use camelcamelcamel-pp-cli when an agent or user asks whether an Amazon price is good, what the lowest or highest price was, or how a product's price compares across Amazon marketplaces. It also covers daily deal scans (drops, popular, fresh-drops) and a local watchlist.",
+    "anti_triggers": [
+      "Searching Amazon by keyword (site search is blocked; get the product URL or ASIN first)",
+      "Buying, carting or checking out on Amazon",
+      "Exact day-by-day prices: the dated series is approximate (read from the chart image, about one day per pixel); only the lowest, highest, current and average values are exact",
+      "Marketplaces other than us, au, uk, ca, de, fr, it, es (for example amazon.co.jp)",
+      "Walmart or other non-Amazon stores"
+    ],
+    "recipes": [
+      {
+        "title": "Price history for a pasted URL",
+        "command": "camelcamelcamel-pp-cli history 'https://www.amazon.com.au/Alpine-PWE-S8/dp/B00OYGGMXK'",
+        "explanation": "Detects the AU marketplace from the domain and prints the three price types."
+      },
+      {
+        "title": "Just the verdicts for an agent",
+        "command": "camelcamelcamel-pp-cli history B07T32R43P --no-series --agent --select product.title,verdicts.label,verdicts.verdict,verdicts.current",
+        "explanation": "Skips the chart and narrows the JSON to the title and one verdict per price type."
+      },
+      {
+        "title": "Daily unseen drops in electronics",
+        "command": "camelcamelcamel-pp-cli fresh-drops --period daily --category electronics --min-pct 30 --agent",
+        "explanation": "Shows only electronics drops of 30% or more that earlier pulls did not record at that price."
+      },
+      {
+        "title": "Which watched items are near their low",
+        "command": "camelcamelcamel-pp-cli lows --within 10",
+        "explanation": "Ranks watched products from their stored snapshots; run watch add and watch check first."
+      }
+    ],
+    "trigger_phrases": [
+      "price history for this amazon link",
+      "is this a good price on amazon",
+      "camelcamelcamel this",
+      "lowest price ever for this product",
+      "amazon price drops today",
+      "use camelcamelcamel"
+    ]
+  },
+  "homepage": "https://camelcamelcamel.com"
+}

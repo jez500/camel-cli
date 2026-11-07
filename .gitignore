@@ -1,0 +1,8 @@
+# Root-anchored so cmd/<binary>/ source stays tracked.
+/camel-cli
+/camel-cli.exe
+/camel-mcp
+/camel-mcp.exe
+/bin/
+/build/
+/dist/

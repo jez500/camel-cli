@@ -1,0 +1,222 @@
+{
+  "api_name": "camelcamelcamel",
+  "base_url": "https://camelcamelcamel.com",
+  "description": "Paste an Amazon URL (US, AU, UK, CA, DE, FR, IT or ES) and get its price history: exact lowest, highest, current and average for every price type, plus an approximate dated series read from the chart.",
+  "mcp_ready": "full",
+  "http_transport": "standard",
+  "auth": {
+    "type": "none"
+  },
+  "required_headers": [
+    {
+      "name": "User-Agent",
+      "value": "camel-cli/0.1.0"
+    },
+    {
+      "name": "Accept",
+      "value": "text/html,application/xhtml+xml,application/xml;q=0.9,image/png,*/*;q=0.8"
+    }
+  ],
+  "tools": [
+    {
+      "name": "chart_get",
+      "description": "Download the price-history chart PNG for an ASIN. Required: locale, asin, price_types. Optional: range (default: all), width (default: 855), height (default: 513) (plus 3 more).",
+      "method": "GET",
+      "path": "/{locale}/{asin}/{price_types}.png",
+      "base_url": "https://charts.camelcamelcamel.com",
+      "no_auth": true,
+      "params": [
+        {
+          "name": "locale",
+          "type": "string",
+          "location": "path",
+          "description": "Marketplace code",
+          "required": true
+        },
+        {
+          "name": "asin",
+          "type": "string",
+          "location": "path",
+          "description": "Amazon ASIN",
+          "required": true
+        },
+        {
+          "name": "price_types",
+          "type": "string",
+          "location": "path",
+          "description": "Price types joined by '-': amazon, new, used (for example amazon-new-used)",
+          "required": true
+        },
+        {
+          "name": "range",
+          "wire_name": "tp",
+          "type": "string",
+          "location": "query",
+          "description": "Time range"
+        },
+        {
+          "name": "width",
+          "wire_name": "w",
+          "type": "int",
+          "location": "query",
+          "description": "Image width in pixels"
+        },
+        {
+          "name": "height",
+          "wire_name": "h",
+          "type": "int",
+          "location": "query",
+          "description": "Image height in pixels"
+        },
+        {
+          "name": "force",
+          "type": "int",
+          "location": "query",
+          "description": "Force fresh render (site default 1)"
+        },
+        {
+          "name": "legend",
+          "type": "int",
+          "location": "query",
+          "description": "Show legend (1) or hide it (0)"
+        },
+        {
+          "name": "lang",
+          "type": "string",
+          "location": "query",
+          "description": "Chart label language"
+        }
+      ]
+    },
+    {
+      "name": "drops_feed",
+      "description": "Top price drops as an RSS feed (title holds drop percent, amount, new and old price). Optional: period, category, min-drop.",
+      "method": "GET",
+      "path": "/top_drops/feed",
+      "no_auth": true,
+      "params": [
+        {
+          "name": "period",
+          "wire_name": "t",
+          "type": "string",
+          "location": "query",
+          "description": "Drop window"
+        },
+        {
+          "name": "category",
+          "wire_name": "bn",
+          "type": "string",
+          "location": "query",
+          "description": "Amazon category slug (for example electronics, books, home-kitchen)"
+        },
+        {
+          "name": "min-drop",
+          "wire_name": "d",
+          "type": "string",
+          "location": "query",
+          "description": "Minimum drop: a currency amount for recent/daily/weekly, or a percent for relative periods"
+        }
+      ]
+    },
+    {
+      "name": "drops_list",
+      "description": "List the top price drops (HTML page). Optional: period, category, min-drop.",
+      "method": "GET",
+      "path": "/top_drops",
+      "no_auth": true,
+      "params": [
+        {
+          "name": "period",
+          "wire_name": "t",
+          "type": "string",
+          "location": "query",
+          "description": "Drop window"
+        },
+        {
+          "name": "category",
+          "wire_name": "bn",
+          "type": "string",
+          "location": "query",
+          "description": "Amazon category"
+        },
+        {
+          "name": "min-drop",
+          "wire_name": "d",
+          "type": "string",
+          "location": "query",
+          "description": "Minimum drop: a currency amount (1, 5, 10, 25, 50, 100) for recent/daily/weekly, or a percent (1-90) for relativedaily/relativeweekly"
+        }
+      ]
+    },
+    {
+      "name": "popular_feed",
+      "description": "Popular products as an RSS feed (current, list and average price). Optional: deals-only.",
+      "method": "GET",
+      "path": "/popular.xml",
+      "no_auth": true,
+      "params": [
+        {
+          "name": "deals-only",
+          "wire_name": "deal",
+          "type": "int",
+          "location": "query",
+          "description": "1 = only products at a deal price"
+        }
+      ]
+    },
+    {
+      "name": "popular_list",
+      "description": "List popular products (HTML page). Optional: deals-only.",
+      "method": "GET",
+      "path": "/popular",
+      "no_auth": true,
+      "params": [
+        {
+          "name": "deals-only",
+          "wire_name": "deal",
+          "type": "int",
+          "location": "query",
+          "description": "1 = only products at a deal price"
+        }
+      ]
+    },
+    {
+      "name": "product_get",
+      "description": "Fetch the camelcamelcamel product page for an ASIN. The page holds the price summary table (Amazon, 3rd Party New, 3rd Party Used) and product details. An untracked ASIN redirects to the home page. Required: asin.",
+      "method": "GET",
+      "path": "/product/{asin}",
+      "no_auth": true,
+      "params": [
+        {
+          "name": "asin",
+          "type": "string",
+          "location": "path",
+          "description": "Amazon ASIN, 10 characters (for example B0EXAMPLE1)",
+          "required": true
+        }
+      ]
+    }
+  ],
+  "novel_features": [
+    {
+      "name": "Cross-marketplace compare",
+      "command": "compare",
+      "description": "See one product's current, lowest and average prices on the US, AU and other Amazon sites side by side."
+    },
+    {
+      "name": "Personal price trend",
+      "command": "trend",
+      "description": "See how a product's price moved across your own past lookups (history, deal, compare, watch add and watch check save snapshots), including new all-time lows."
+    },
+    {
+      "name": "Watchlist near-lows ranking",
+      "command": "lows",
+      "description": "Rank every watched product by how close its current price is to its lowest-ever price (needs watch add and watch check first)."
+    },
+    {
+      "name": "Unseen drops",
+      "command": "fresh-drops",
+      "description": "Show only the top price drops you have not already seen in earlier pulls."
+    }
+  ]
+}

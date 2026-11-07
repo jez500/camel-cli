@@ -1,0 +1,192 @@
+name: camel
+description: "Amazon price history from camelcamelcamel: paste an Amazon URL, get lowest, highest, current and average prices"
+version: "0.1.0"
+base_url: "https://camelcamelcamel.com"
+http_transport: standard
+health_check_path: "/top_drops/feed"
+required_headers:
+  - name: User-Agent
+    value: "camel-cli/0.1.0"
+  - name: Accept
+    value: "text/html,application/xhtml+xml,application/xml;q=0.9,image/png,*/*;q=0.8"
+auth:
+  type: none
+category: commerce
+learn:
+  ticker_patterns:
+    - "^b0[0-9a-z]{8}$"
+  entity_lookup_seeds:
+    marketplace:
+      - canonical: us
+        aliases: [usa, united states, amazon.com, america]
+      - canonical: au
+        aliases: [australia, amazon.com.au, aus]
+      - canonical: uk
+        aliases: [united kingdom, britain, amazon.co.uk, gb]
+      - canonical: ca
+        aliases: [canada, amazon.ca]
+      - canonical: de
+        aliases: [germany, amazon.de]
+      - canonical: fr
+        aliases: [france, amazon.fr]
+      - canonical: it
+        aliases: [italy, amazon.it]
+      - canonical: es
+        aliases: [spain, amazon.es]
+    price_type:
+      - canonical: amazon
+        aliases: [sold by amazon, amazon price]
+      - canonical: new
+        aliases: [3rd party new, third party new, marketplace new]
+      - canonical: used
+        aliases: [3rd party used, third party used, second hand]
+  synonyms:
+    "lowest ever": "lowest"
+    "all time low": "lowest"
+
+resources:
+  product:
+    description: "Product price pages (one page per ASIN per Amazon marketplace)"
+    endpoints:
+      get:
+        method: GET
+        path: "/product/{asin}"
+        description: "Fetch the camelcamelcamel product page for an ASIN. The page holds the price summary table (Amazon, 3rd Party New, 3rd Party Used) and product details. An untracked ASIN redirects to the home page."
+        happy_args: "asin=B07T32R43P"
+        params:
+          - name: asin
+            type: string
+            required: true
+            positional: true
+            description: "Amazon ASIN, 10 characters (for example B07T32R43P)"
+        response_format: html
+        html_extract:
+          mode: page
+  chart:
+    description: "Price-history chart images (PNG)"
+    base_url: "https://charts.camelcamelcamel.com"
+    endpoints:
+      get:
+        method: GET
+        path: "/{locale}/{asin}/{price_types}.png"
+        description: "Download the price-history chart PNG for an ASIN"
+        happy_args: "locale=us;asin=B07T32R43P;price_types=amazon-new-used"
+        params:
+          - name: locale
+            type: string
+            required: true
+            positional: true
+            enum: [us, au, uk, ca, de, fr, it, es]
+            description: "Marketplace code"
+          - name: asin
+            type: string
+            required: true
+            positional: true
+            description: "Amazon ASIN"
+          - name: price_types
+            type: string
+            required: true
+            positional: true
+            description: "Price types joined by '-': amazon, new, used (for example amazon-new-used)"
+          - name: tp
+            flag_name: range
+            type: string
+            default: "all"
+            enum: ["1m", "3m", "6m", "1y", "all"]
+            description: "Time range"
+          - name: w
+            flag_name: width
+            type: int
+            default: 855
+            description: "Image width in pixels"
+          - name: h
+            flag_name: height
+            type: int
+            default: 513
+            description: "Image height in pixels"
+          - name: force
+            type: int
+            default: 1
+            description: "Force fresh render (site default 1)"
+          - name: legend
+            type: int
+            default: 1
+            description: "Show legend (1) or hide it (0)"
+          - name: lang
+            type: string
+            default: "en"
+            description: "Chart label language"
+        response_format: binary
+  drops:
+    description: "Top Amazon price drops"
+    endpoints:
+      list:
+        method: GET
+        path: "/top_drops"
+        description: "List the top price drops (HTML page)"
+        params:
+          - name: t
+            flag_name: period
+            type: string
+            enum: [recent, daily, weekly, relativedaily, relativeweekly]
+            description: "Drop window"
+          - name: bn
+            flag_name: category
+            type: string
+            enum: [appliances, arts-crafts-sewing, automotive, baby-products, beauty, books, cell-phones-accessories, clothing-accessories, electronics, grocery-gourmet-food, health-personal-care, home-kitchen, industrial-scientific, jewelry, kindle-store, movies-tv, music, musical-instruments, office-products, other, patio-lawn-garden, pet-supplies, shoes, software, sports-outdoors, tools-home-improvement, toys-games, video-games]
+            description: "Amazon category"
+          - name: d
+            flag_name: min-drop
+            type: string
+            description: "Minimum drop: a currency amount (1, 5, 10, 25, 50, 100) for recent/daily/weekly, or a percent (1-90) for relativedaily/relativeweekly"
+        response_format: html
+        html_extract:
+          mode: links
+          link_prefixes: ["/product"]
+      feed:
+        method: GET
+        path: "/top_drops/feed"
+        description: "Top price drops as an RSS feed (title holds drop percent, amount, new and old price)"
+        params:
+          - name: t
+            flag_name: period
+            type: string
+            enum: [recent, daily, weekly, relativedaily, relativeweekly]
+            description: "Drop window"
+          - name: bn
+            flag_name: category
+            type: string
+            description: "Amazon category slug (for example electronics, books, home-kitchen)"
+          - name: d
+            flag_name: min-drop
+            type: string
+            description: "Minimum drop: a currency amount for recent/daily/weekly, or a percent for relative periods"
+        response_format: xml
+  popular:
+    description: "Popular products"
+    endpoints:
+      list:
+        method: GET
+        path: "/popular"
+        description: "List popular products (HTML page)"
+        params:
+          - name: deal
+            flag_name: deals-only
+            type: int
+            enum: ["0", "1"]
+            description: "1 = only products at a deal price"
+        response_format: html
+        html_extract:
+          mode: links
+          link_prefixes: ["/product"]
+      feed:
+        method: GET
+        path: "/popular.xml"
+        description: "Popular products as an RSS feed (current, list and average price)"
+        params:
+          - name: deal
+            flag_name: deals-only
+            type: int
+            enum: ["0", "1"]
+            description: "1 = only products at a deal price"
+        response_format: xml
